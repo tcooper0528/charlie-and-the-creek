@@ -92,6 +92,29 @@
   .cap.tr{top:4.5%;right:4.5%;text-align:left;}
   .cap.tc{top:4.5%;left:50%;transform:translateX(-50%);max-width:86%;text-align:center;}
 
+  /* ============================================================
+     MOBILE: turn the corner caption into a clean full-width band
+     pinned to the TOP (over the sky / quiet space the art was
+     composed with). Bigger text, one predictable location, and
+     the picture below stays uncovered. Desktop keeps the card.
+     ============================================================ */
+  @media (max-width: 680px){
+    .cap.tl, .cap.tr, .cap.tc{
+      top:0; left:0; right:0; bottom:auto;
+      transform:none;
+      max-width:100%;
+      text-align:center;
+      border:none;
+      border-radius:0 0 18px 18px;
+      padding:16px 20px 18px;
+      font-size:clamp(16px,4.6vw,21px);
+      line-height:1.5;
+      background:rgba(251,244,230,.96);
+      box-shadow:0 8px 18px rgba(67,41,26,.22);
+    }
+    .cap .ln + .ln{margin-top:.35em;}
+  }
+
   /* ---- Tap zones ---- */
   .zone{position:absolute;top:0;bottom:0;z-index:4;cursor:pointer;}
   .zone.prev{left:0;width:38%;}
@@ -128,13 +151,13 @@
 <body>
 
   <div class="stage" id="stage">
-    <div class="hint" id="hint">Tap right to turn the page →</div>
+    <div class="hint" id="hint">Tap right to turn the page &rarr;</div>
   </div>
 
   <div class="bar">
     <button class="nav" id="prev" aria-label="Previous page">&lsaquo;</button>
-    <div class="track"><div class="fill" id="fill"></div><span class="acorn" id="acorn">🌰</span></div>
-    <span class="count" id="count">1 / 19</span>
+    <div class="track"><div class="fill" id="fill"></div><span class="acorn" id="acorn">&#127808;</span></div>
+    <span class="count" id="count">1 / 20</span>
     <button class="nav" id="next" aria-label="Next page">&rsaquo;</button>
   </div>
 
@@ -151,9 +174,10 @@ const BOOK = {
   verseRef: "Ephesians 6:1",
 };
 
-/* Pages in order.  pos = which corner the caption sits in:
-   tl = top-left, tr = top-right, tc = top-center
-   (matches the "quiet space" the art was composed with). */
+/* Pages in order.  pos = which corner the caption sits in on
+   DESKTOP (tl = top-left, tr = top-right, tc = top-center),
+   matching the "quiet space" the art was composed with.
+   On phones every caption becomes a clean top band automatically. */
 const PAGES = [
   { file:"pages/00_covera.jpg", cover:true, alt:"Cover — Sammy and Charlie at the creek" },
 
@@ -172,7 +196,8 @@ The water moves too fast."` },
 
   { file:"pages/04_pg04.jpg", pos:"tl", alt:"Sammy and Mama wave as he heads to play", text:
 `"I have rules to keep you safe.
-I do not want you to get hurt or be scared," said Mama.
+I do not want you to get hurt," said Mama.
+"Rules keep us safe."
 Sammy and Mama waved as he went to play.` },
 
   { file:"pages/05_pg05.jpg", pos:"tc", alt:"Tag in the meadow", text:
@@ -191,9 +216,16 @@ It was a fun day.` },
 He saw the stepping stones.
 "Let's cross!" said Charlie.` },
 
-  { file:"pages/08_pg08.jpg", pos:"tr", alt:"Sammy says no", text:
-`"No," said Sammy. "Mama said no.
-Rules keep us safe."
+  { file:"pages/07b_pg07b.jpg", pos:"tc", alt:"The creek sweeps a leaf away", text:
+`A leaf fell in the water.
+Swoosh! The creek swept it away.
+The water was strong and fast.` },
+
+  { file:"pages/08_pg08.jpg", pos:"tr", alt:"Sammy wants to cross but chooses not to", text:
+`Sammy wanted to cross too.
+The stones looked like fun.
+But he remembered Mama.
+"No," said Sammy. "Rules keep us safe."
 "I am not scared!" said Charlie.` },
 
   { file:"pages/09_pg09.jpg", pos:"tl", alt:"Charlie hops the wet stones", text:
@@ -231,7 +263,7 @@ even when we do not know why."` },
 
   { file:"pages/16_pg16.jpg", pos:"tr", alt:"Home to Mama", text:
 `Sammy ran home to Mama.
-"Mama, your rules keep me safe," said Sammy.
+"Mama, you were right. Rules keep us safe," said Sammy.
 "You obeyed!" said Mama. "I am so proud of you."` },
 
   { file:"pages/17_pg17.jpg", pos:"tl", alt:"Sammy's prayer", text:
