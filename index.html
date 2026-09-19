@@ -74,45 +74,34 @@
   .verse p{font-family:'Fraunces',serif;font-style:italic;font-weight:500;font-size:clamp(16px,4.2vw,24px);line-height:1.4;color:var(--ink);}
   .verse .ref{font-family:'Nunito',sans-serif;font-style:normal;font-weight:800;letter-spacing:.06em;text-transform:uppercase;font-size:clamp(11px,2.8vw,14px);color:var(--rust-deep);margin-top:.9em;display:block;}
 
-  /* ---- Caption card (placed in each page's quiet-space corner) ---- */
+  /* ---- Caption: ONE consistent band across the TOP of every page ----
+     Every page's art was composed with its quiet space at the top
+     (sky), so a top band always sits over open sky, never over a
+     character — and it stays in the SAME place on every page, so the
+     text no longer jumps corner to corner. Same treatment on laptop
+     and phone. */
   .cap{
-    position:absolute;z-index:3;pointer-events:none;max-width:72%;
-    background:rgba(251,244,230,.92);border:1px solid rgba(180,85,44,.35);
-    border-radius:14px;padding:14px 20px;
+    position:absolute;top:0;left:0;right:0;z-index:3;pointer-events:none;
+    text-align:center;white-space:pre-line;
+    background:rgba(251,244,230,.94);
+    border-bottom:1px solid rgba(180,85,44,.28);
+    border-radius:0 0 18px 18px;
+    padding:16px 22px 18px;
     font-family:'Fraunces',serif;font-weight:500;color:var(--ink);
-    font-size:clamp(13px,3.15vw,19px);line-height:1.5;white-space:pre-line;
-    box-shadow:0 6px 18px rgba(67,41,26,.22);
+    font-size:clamp(15px,2.4vw,21px);line-height:1.5;
+    box-shadow:0 8px 18px rgba(67,41,26,.18);
     opacity:0;transition:opacity .45s ease;
   }
-  /* each line (a complete thought) gets a little air */
   .cap .ln{display:block;text-wrap:balance;}
-  .cap .ln + .ln{margin-top:.4em;}
+  .cap .ln + .ln{margin-top:.35em;}
   .page.active .cap{opacity:1;}
-  .cap.tl{top:4.5%;left:4.5%;text-align:left;}
-  .cap.tr{top:4.5%;right:4.5%;text-align:left;}
-  .cap.tc{top:4.5%;left:50%;transform:translateX(-50%);max-width:86%;text-align:center;}
+  /* pos classes kept so the page data still validates, but they no
+     longer move the caption — placement is now uniform everywhere. */
+  .cap.tl,.cap.tr,.cap.tc{left:0;right:0;transform:none;max-width:100%;text-align:center;}
 
-  /* ============================================================
-     MOBILE: turn the corner caption into a clean full-width band
-     pinned to the TOP (over the sky / quiet space the art was
-     composed with). Bigger text, one predictable location, and
-     the picture below stays uncovered. Desktop keeps the card.
-     ============================================================ */
+  /* phone: a touch larger for reading aloud */
   @media (max-width: 680px){
-    .cap.tl, .cap.tr, .cap.tc{
-      top:0; left:0; right:0; bottom:auto;
-      transform:none;
-      max-width:100%;
-      text-align:center;
-      border:none;
-      border-radius:0 0 18px 18px;
-      padding:16px 20px 18px;
-      font-size:clamp(16px,4.6vw,21px);
-      line-height:1.5;
-      background:rgba(251,244,230,.96);
-      box-shadow:0 8px 18px rgba(67,41,26,.22);
-    }
-    .cap .ln + .ln{margin-top:.35em;}
+    .cap{font-size:clamp(16px,4.6vw,21px);padding:16px 18px 18px;}
   }
 
   /* ---- Tap zones ---- */
