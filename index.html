@@ -146,7 +146,7 @@
   <div class="bar">
     <button class="nav" id="prev" aria-label="Previous page">&lsaquo;</button>
     <div class="track"><div class="fill" id="fill"></div><span class="acorn" id="acorn">&#127808;</span></div>
-    <span class="count" id="count">1 / 20</span>
+    <span class="count" id="count">1 / 21</span>
     <button class="nav" id="next" aria-label="Next page">&rsaquo;</button>
   </div>
 
@@ -163,27 +163,27 @@ const BOOK = {
   verseRef: "Ephesians 6:1",
 };
 
-/* Pages in order.  pos = which corner the caption sits in on
-   DESKTOP (tl = top-left, tr = top-right, tc = top-center),
-   matching the "quiet space" the art was composed with.
-   On phones every caption becomes a clean top band automatically. */
+/* Pages in order.  File names are now clean and sequential:
+   the file number IS the page slot, so nothing drifts.
+   (pos is kept for data compatibility; captions render as a
+   uniform top band regardless.) */
 const PAGES = [
-  { file:"pages/00_covera.jpg", cover:true, alt:"Cover — Sammy and Charlie at the creek" },
+  { file:"pages/00_cover.jpg", cover:true, alt:"Cover — Sammy and Charlie at the creek" },
 
-  { file:"pages/01_pg01a.jpg", pos:"tl", alt:"Sammy at the big oak tree home", text:
+  { file:"pages/01_pg01.jpg", pos:"tc", alt:"Sammy at the big oak tree home", text:
 `Sammy lived in a big oak tree.
 He lived there with his mama.` },
 
-  { file:"pages/02_pg02a.jpg", pos:"tr", alt:"Mama points toward the creek", text:
+  { file:"pages/02_pg2.jpg", pos:"tc", alt:"Mama points toward the creek", text:
 `"You may play in the meadow," said Mama.
 "But do not cross the creek.
 The water moves too fast."` },
 
-  { file:"pages/03_pg03.jpg", pos:"tl", alt:"Sammy questions the rule", text:
+  { file:"pages/03_pg03.jpg", pos:"tc", alt:"Sammy questions the rule", text:
 `"But my friends play in the creek," said Sammy.
 "Why do you make a rule that says I can't?"` },
 
-  { file:"pages/04_pg04.jpg", pos:"tl", alt:"Sammy and Mama wave as he heads to play", text:
+  { file:"pages/04_pg04.jpg", pos:"tc", alt:"Sammy and Mama wave as he heads to play", text:
 `"I have rules to keep you safe.
 I do not want you to get hurt," said Mama.
 "Rules keep us safe."
@@ -200,67 +200,70 @@ Bella and Charlie were there.
 They laughed and laughed.
 It was a fun day.` },
 
-  { file:"pages/07_pg07.jpg", pos:"tl", alt:"Charlie spots the stepping stones", text:
+  { file:"pages/07_pg07.jpg", pos:"tc", alt:"Charlie spots the stepping stones", text:
 `Then Charlie saw the creek.
 He saw the stepping stones.
 "Let's cross!" said Charlie.` },
 
-  { file:"pages/07_pg07b.jpg", pos:"tc", alt:"The creek sweeps a leaf away", text:
+  { file:"pages/08_pg08.jpg", pos:"tc", alt:"The creek sweeps a leaf away", text:
 `A leaf fell in the water.
 Swoosh! The creek swept it away.
 The water was strong and fast.` },
 
-  { file:"pages/08_pg08.jpg", pos:"tr", alt:"Sammy wants to cross but chooses not to", text:
+  { file:"pages/09_pg09.jpg", pos:"tc", alt:"Sammy remembers what Mama said", text:
 `Sammy wanted to cross too.
 The stones looked like fun.
-But he remembered Mama.
-"No," said Sammy. "Rules keep us safe."
-"I am not scared!" said Charlie.` },
+But he remembered what Mama said.
+"No," said Sammy. "Rules keep us safe."` },
 
-  { file:"pages/09_pg09.jpg", pos:"tl", alt:"Charlie hops the wet stones", text:
-`Charlie hopped from stone to stone.
+  { file:"pages/10_pg10.jpg", pos:"tc", alt:"Charlie is not scared", text:
+`"Rules do not sound fun, and I am not scared," said Charlie.` },
+
+  { file:"pages/11_pg11.jpg", pos:"tc", alt:"Charlie hops the wet stones", text:
+`Charlie did not listen.
+He hopped from stone to stone.
 Hop! Hop! Hop!
 The stones were wet.` },
 
-  { file:"pages/10_pg10.jpg", pos:"tc", alt:"Charlie falls in", text:
+  { file:"pages/12_pg12.jpg", pos:"tc", alt:"Charlie falls in", text:
 `SPLASH!
 Charlie fell in the creek!
 "Help!" cried Charlie.` },
 
-  { file:"pages/11_pg11.jpg", pos:"tl", alt:"The rescue", text:
+  { file:"pages/13_pg13.jpg", pos:"tc", alt:"The rescue", text:
 `Sammy grabbed a branch.
 Bella held Sammy's paw.
 They pulled and pulled.` },
 
-  { file:"pages/12_pg12.jpg", pos:"tc", alt:"Safe on the bank", text:
-`Charlie was scared but safe.
+  { file:"pages/14_pg14.jpg", pos:"tc", alt:"Safe on the bank", text:
+`Charlie was scared but his friends made sure he was safe.
 He was wet and cold.
 "I am sorry, Sammy. You were right — the creek was not safe," said Charlie.` },
 
-  { file:"pages/13_pg13.jpg", pos:"tr", alt:"Oliver Owl arrives", text:
+  { file:"pages/15_pg15.jpg", pos:"tc", alt:"Oliver Owl arrives", text:
 `"Whooo goes there?"
 It was Oliver Owl!
 He flew down from the oak tree.` },
 
-  { file:"pages/14_pg14.jpg", pos:"tl", alt:"Oliver teaches the friends", text:
+  { file:"pages/16_pg16.jpg", pos:"tc", alt:"Oliver teaches the friends", text:
 `"Little ones," said Oliver,
 "mamas and papas know what is best to keep us safe,
 even when we do not know why."` },
 
-  { file:"pages/15_pg15.jpg", pos:"tl", alt:"Obeying shows love", text:
+  { file:"pages/17_pg17.jpg", pos:"tc", alt:"Obeying shows love", text:
 `"When we obey our parents, we show them how much we love them."` },
 
-  { file:"pages/16_pg16.jpg", pos:"tr", alt:"Home to Mama", text:
+  { file:"pages/18_pg18.jpg", pos:"tc", alt:"Home to Mama", text:
 `Sammy ran home to Mama.
 "Mama, you were right. Rules keep us safe," said Sammy.
 "You obeyed!" said Mama. "I am so proud of you."` },
 
-  { file:"pages/17_pg17.jpg", pos:"tl", alt:"Sammy's prayer", text:
+  { file:"pages/18_pg19.jpg", pos:"tc", alt:"Sammy's prayer", text:
 `That night, Sammy prayed.
 "Thank You, God, for Mama.
 Thank You for rules that keep us safe. Amen."` },
 
-  { file:"pages/18_back.jpg", verse:true, alt:"Back — the verse" },
+  { file:"pages/20_back.jpg", verse:true, alt:"Back — the verse" },
 ];
 
 /* =========================================================
