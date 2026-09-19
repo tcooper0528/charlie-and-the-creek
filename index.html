@@ -13,6 +13,8 @@
     --rust:#B4552C; --rust-deep:#8E3F1E;
     --ink:#43291A; --acorn:#7A4A28;
     --shadow:0 18px 50px rgba(67,41,26,.35);
+    /* one shared width/size for caption, image and control bar */
+    --unit:min(90vw, 62dvh, 640px);
   }
   *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
   html,body{height:100%;}
@@ -21,14 +23,37 @@
     background:radial-gradient(120% 120% at 50% 0%, #F7EAD0 0%, #EAD3AE 55%, #D8B98C 100%);
     color:var(--ink);
     display:flex;flex-direction:column;align-items:center;justify-content:center;
-    min-height:100dvh;overflow:hidden;user-select:none;padding:16px;
+    min-height:100dvh;overflow:hidden;user-select:none;padding:14px;
   }
 
-  /* ---- Book stage (square) ---- */
+  /* ---- Text panel ABOVE the image — never covers the art ---- */
+  .caption{
+    width:var(--unit);
+    margin:0 auto 12px;
+    background:rgba(251,244,230,.97);
+    border:1px solid rgba(180,85,44,.30);
+    border-radius:16px;
+    padding:14px 22px;
+    text-align:center;
+    font-family:'Fraunces',serif;font-weight:500;color:var(--ink);
+    font-size:clamp(15px,2.4vw,21px);line-height:1.45;
+    box-shadow:0 6px 16px rgba(67,41,26,.16);
+    /* hold a steady height so the picture doesn't jump between pages */
+    min-height:calc(3.2em + 28px);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+  }
+  .caption .ln{display:block;text-wrap:balance;}
+  .caption .ln + .ln{margin-top:.3em;}
+  .caption.empty{visibility:hidden;}   /* cover & back page carry their own overlay */
+  @media (max-width:680px){
+    .caption{font-size:clamp(16px,4.4vw,20px);}
+  }
+
+  /* ---- Book stage (square image) ---- */
   .stage{
     position:relative;
-    width:min(92vw, 88dvh, 720px);
-    height:min(92vw, 88dvh, 720px);
+    width:var(--unit);
+    height:var(--unit);
     border-radius:18px;overflow:hidden;
     box-shadow:var(--shadow);background:#2c1a10;
   }
@@ -40,7 +65,7 @@
   .page.active{opacity:1;transform:scale(1);z-index:2;pointer-events:auto;}
   .page img{width:100%;height:100%;object-fit:cover;display:block;}
 
-  /* ---- Cover title overlay ---- */
+  /* ---- Cover title overlay (cover art is built for this) ---- */
   .cover-title{position:absolute;left:0;right:0;top:5%;text-align:center;padding:0 8%;z-index:3;pointer-events:none;}
   .cover-title h1{
     font-family:'Fraunces',serif;font-weight:600;
@@ -63,7 +88,7 @@
     box-shadow:0 4px 14px rgba(67,41,26,.28);
   }
 
-  /* ---- Verse overlay (back page) ---- */
+  /* ---- Verse overlay (back page art is built for this) ---- */
   .verse{
     position:absolute;left:50%;top:8%;transform:translate(-50%,0);
     width:82%;max-width:460px;z-index:3;pointer-events:none;
@@ -74,36 +99,6 @@
   .verse p{font-family:'Fraunces',serif;font-style:italic;font-weight:500;font-size:clamp(16px,4.2vw,24px);line-height:1.4;color:var(--ink);}
   .verse .ref{font-family:'Nunito',sans-serif;font-style:normal;font-weight:800;letter-spacing:.06em;text-transform:uppercase;font-size:clamp(11px,2.8vw,14px);color:var(--rust-deep);margin-top:.9em;display:block;}
 
-  /* ---- Caption: ONE consistent band across the TOP of every page ----
-     Every page's art was composed with its quiet space at the top
-     (sky), so a top band always sits over open sky, never over a
-     character — and it stays in the SAME place on every page, so the
-     text no longer jumps corner to corner. Same treatment on laptop
-     and phone. */
-  .cap{
-    position:absolute;top:0;left:0;right:0;z-index:3;pointer-events:none;
-    text-align:center;white-space:pre-line;
-    background:rgba(251,244,230,.94);
-    border-bottom:1px solid rgba(180,85,44,.28);
-    border-radius:0 0 18px 18px;
-    padding:16px 22px 18px;
-    font-family:'Fraunces',serif;font-weight:500;color:var(--ink);
-    font-size:clamp(15px,2.4vw,21px);line-height:1.5;
-    box-shadow:0 8px 18px rgba(67,41,26,.18);
-    opacity:0;transition:opacity .45s ease;
-  }
-  .cap .ln{display:block;text-wrap:balance;}
-  .cap .ln + .ln{margin-top:.35em;}
-  .page.active .cap{opacity:1;}
-  /* pos classes kept so the page data still validates, but they no
-     longer move the caption — placement is now uniform everywhere. */
-  .cap.tl,.cap.tr,.cap.tc{left:0;right:0;transform:none;max-width:100%;text-align:center;}
-
-  /* phone: a touch larger for reading aloud */
-  @media (max-width: 680px){
-    .cap{font-size:clamp(16px,4.6vw,21px);padding:16px 18px 18px;}
-  }
-
   /* ---- Tap zones ---- */
   .zone{position:absolute;top:0;bottom:0;z-index:4;cursor:pointer;}
   .zone.prev{left:0;width:38%;}
@@ -111,8 +106,8 @@
 
   /* ---- Controls ---- */
   .bar{
-    display:flex;align-items:center;gap:14px;width:min(92vw,88dvh,720px);
-    margin-top:16px;padding:10px 16px;background:rgba(251,244,230,.92);
+    display:flex;align-items:center;gap:14px;width:var(--unit);
+    margin-top:14px;padding:10px 16px;background:rgba(251,244,230,.92);
     border-radius:40px;box-shadow:0 6px 18px rgba(67,41,26,.18);
   }
   .nav{
@@ -139,6 +134,8 @@
 </head>
 <body>
 
+  <div class="caption empty" id="caption"></div>
+
   <div class="stage" id="stage">
     <div class="hint" id="hint">Tap right to turn the page &rarr;</div>
   </div>
@@ -163,102 +160,100 @@ const BOOK = {
   verseRef: "Ephesians 6:1",
 };
 
-/* Pages in order.  File names are now clean and sequential:
-   the file number IS the page slot, so nothing drifts.
-   (pos is kept for data compatibility; captions render as a
-   uniform top band regardless.) */
+/* Pages in order.  Text now shows in the panel ABOVE the image,
+   so it never covers the art. File names are clean and sequential. */
 const PAGES = [
   { file:"pages/00_cover.jpg", cover:true, alt:"Cover — Sammy and Charlie at the creek" },
 
-  { file:"pages/01_pg01.jpg", pos:"tc", alt:"Sammy at the big oak tree home", text:
+  { file:"pages/01_pg01.jpg", alt:"Sammy at the big oak tree home", text:
 `Sammy lived in a big oak tree.
 He lived there with his mama.` },
 
-  { file:"pages/02_pg2.jpg", pos:"tc", alt:"Mama points toward the creek", text:
+  { file:"pages/02_pg2.jpg", alt:"Mama points toward the creek", text:
 `"You may play in the meadow," said Mama.
 "But do not cross the creek.
 The water moves too fast."` },
 
-  { file:"pages/03_pg03.jpg", pos:"tc", alt:"Sammy questions the rule", text:
+  { file:"pages/03_pg03.jpg", alt:"Sammy questions the rule", text:
 `"But my friends play in the creek," said Sammy.
 "Why do you make a rule that says I can't?"` },
 
-  { file:"pages/04_pg04.jpg", pos:"tc", alt:"Sammy and Mama wave as he heads to play", text:
+  { file:"pages/04_pg04.jpg", alt:"Sammy and Mama wave as he heads to play", text:
 `"I have rules to keep you safe.
 I do not want you to get hurt," said Mama.
 "Rules keep us safe."
 Sammy and Mama waved as he went to play.` },
 
-  { file:"pages/05_pg05.jpg", pos:"tc", alt:"Tag in the meadow", text:
+  { file:"pages/05_pg05.jpg", alt:"Tag in the meadow", text:
 `Sammy thought about what Mama had said.
 Then he ran to the meadow.
 Bella and Charlie were there.
 "Tag! You are it!" said Bella.` },
 
-  { file:"pages/06_pg06.jpg", pos:"tc", alt:"Playing and laughing", text:
+  { file:"pages/06_pg06.jpg", alt:"Playing and laughing", text:
 `They ran and ran.
 They laughed and laughed.
 It was a fun day.` },
 
-  { file:"pages/07_pg07.jpg", pos:"tc", alt:"Charlie spots the stepping stones", text:
+  { file:"pages/07_pg07.jpg", alt:"Charlie spots the stepping stones", text:
 `Then Charlie saw the creek.
 He saw the stepping stones.
 "Let's cross!" said Charlie.` },
 
-  { file:"pages/08_pg08.jpg", pos:"tc", alt:"The creek sweeps a leaf away", text:
+  { file:"pages/08_pg08.jpg", alt:"The creek sweeps a leaf away", text:
 `A leaf fell in the water.
 Swoosh! The creek swept it away.
 The water was strong and fast.` },
 
-  { file:"pages/09_pg09.jpg", pos:"tc", alt:"Sammy remembers what Mama said", text:
+  { file:"pages/09_pg09.jpg", alt:"Sammy remembers what Mama said", text:
 `Sammy wanted to cross too.
 The stones looked like fun.
 But he remembered what Mama said.
 "No," said Sammy. "Rules keep us safe."` },
 
-  { file:"pages/10_pg10.jpg", pos:"tc", alt:"Charlie is not scared", text:
+  { file:"pages/10_pg10.jpg", alt:"Charlie is not scared", text:
 `"Rules do not sound fun, and I am not scared," said Charlie.` },
 
-  { file:"pages/11_pg11.jpg", pos:"tc", alt:"Charlie hops the wet stones", text:
+  { file:"pages/11_pg11.jpg", alt:"Charlie hops the wet stones", text:
 `Charlie did not listen.
 He hopped from stone to stone.
 Hop! Hop! Hop!
 The stones were wet.` },
 
-  { file:"pages/12_pg12.jpg", pos:"tc", alt:"Charlie falls in", text:
+  { file:"pages/12_pg12.jpg", alt:"Charlie falls in", text:
 `SPLASH!
 Charlie fell in the creek!
 "Help!" cried Charlie.` },
 
-  { file:"pages/13_pg13.jpg", pos:"tc", alt:"The rescue", text:
+  { file:"pages/13_pg13.jpg", alt:"The rescue", text:
 `Sammy grabbed a branch.
 Bella held Sammy's paw.
 They pulled and pulled.` },
 
-  { file:"pages/14_pg14.jpg", pos:"tc", alt:"Safe on the bank", text:
+  { file:"pages/14_pg14.jpg", alt:"Safe on the bank", text:
 `Charlie was scared but his friends made sure he was safe.
 He was wet and cold.
 "I am sorry, Sammy. You were right — the creek was not safe," said Charlie.` },
 
-  { file:"pages/15_pg15.jpg", pos:"tc", alt:"Oliver Owl arrives", text:
+  { file:"pages/15_pg15.jpg", alt:"Oliver Owl arrives", text:
 `"Whooo goes there?"
 It was Oliver Owl!
 He flew down from the oak tree.` },
 
-  { file:"pages/16_pg16.jpg", pos:"tc", alt:"Oliver teaches the friends", text:
+  { file:"pages/16_pg16.jpg", alt:"Oliver teaches the friends", text:
 `"Little ones," said Oliver,
 "mamas and papas know what is best to keep us safe,
 even when we do not know why."` },
 
-  { file:"pages/17_pg17.jpg", pos:"tc", alt:"Obeying shows love", text:
+  { file:"pages/17_pg17.jpg", alt:"Obeying shows love", text:
 `"When we obey our parents, we show them how much we love them."` },
 
-  { file:"pages/18_pg18.jpg", pos:"tc", alt:"Home to Mama", text:
+  { file:"pages/18_pg18.jpg", alt:"Home to Mama", text:
 `Sammy ran home to Mama.
 "Mama, you were right. Rules keep us safe," said Sammy.
 "You obeyed!" said Mama. "I am so proud of you."` },
 
-  { file:"pages/18_pg19.jpg", pos:"tc", alt:"Sammy's prayer", text:
+  { file:"pages/18_pg19.jpg", alt:"Sammy's prayer", text:
 `That night, Sammy prayed.
 "Thank You, God, for Mama.
 Thank You for rules that keep us safe. Amen."` },
@@ -270,6 +265,7 @@ Thank You for rules that keep us safe. Amen."` },
    ENGINE
    ========================================================= */
 const stage=document.getElementById('stage');
+const caption=document.getElementById('caption');
 const prevBtn=document.getElementById('prev');
 const nextBtn=document.getElementById('next');
 const fill=document.getElementById('fill');
@@ -296,17 +292,22 @@ const els=PAGES.map((p,idx)=>{
     v.innerHTML=`<p>&ldquo;${BOOK.verse}&rdquo;<span class="ref">${BOOK.verseRef}</span></p>`;
     d.appendChild(v);
   }
-  if(p.text){
-    const c=document.createElement('div');c.className='cap '+(p.pos||'tc');
-    p.text.split('\n').forEach(line=>{
-      const s=document.createElement('span');s.className='ln';s.textContent=line;
-      c.appendChild(s);
-    });
-    d.appendChild(c);
-  }
   stage.appendChild(d);
   return d;
 });
+
+function setCaption(p){
+  caption.innerHTML='';
+  if(p.text){
+    p.text.split('\n').forEach(line=>{
+      const s=document.createElement('span');s.className='ln';s.textContent=line;
+      caption.appendChild(s);
+    });
+    caption.classList.remove('empty');
+  } else {
+    caption.classList.add('empty');   /* keeps its space; cover/back use their own overlay */
+  }
+}
 
 function ensureLoaded(idx){
   [idx-1,idx,idx+1].forEach(n=>{
@@ -317,6 +318,7 @@ function ensureLoaded(idx){
 }
 function render(){
   els.forEach((el,n)=>el.classList.toggle('active',n===i));
+  setCaption(PAGES[i]);
   ensureLoaded(i);
   const pct=els.length>1?(i/(els.length-1))*100:0;
   fill.style.width=pct+'%';acorn.style.left=pct+'%';
