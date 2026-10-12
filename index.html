@@ -44,6 +44,8 @@
   }
   .caption .ln{display:block;text-wrap:balance;}
   .caption .ln + .ln{margin-top:.3em;}
+  /* ---- The book's refrain — same words, same look, every time, so little readers can say it along ---- */
+  .caption .refrain{font-style:italic;font-weight:600;color:var(--rust-deep);}
   .caption.empty{visibility:hidden;}   /* cover & back page carry their own overlay */
   @media (max-width:680px){
     .caption{font-size:clamp(16px,4.4vw,20px);}
@@ -66,16 +68,25 @@
   .page img{width:100%;height:100%;object-fit:cover;display:block;}
 
   /* ---- Cover title overlay (cover art is built for this) ---- */
-  .cover-title{position:absolute;left:0;right:0;top:5%;text-align:center;padding:0 8%;z-index:3;pointer-events:none;}
+  /* Title sits on a solid cream plaque — no halo or glow — so it reads clearly over any art */
+  .cover-title{position:absolute;left:0;right:0;top:5%;text-align:center;padding:0 6%;z-index:3;pointer-events:none;}
+  .cover-title .plaque{
+    display:inline-block;max-width:100%;
+    background:rgba(251,244,230,.96);
+    border:2px solid rgba(180,85,44,.45);
+    border-radius:18px;
+    padding:.5em 1.1em .6em;
+    box-shadow:0 6px 18px rgba(67,41,26,.30);
+  }
   .cover-title h1{
     font-family:'Fraunces',serif;font-weight:600;
     font-size:clamp(28px,7.8vw,54px);line-height:1.05;color:#5A2E14;
-    text-shadow:0 1px 0 rgba(255,248,235,.85), 0 2px 14px rgba(255,248,235,.65);
+    text-shadow:none;
   }
   .cover-title .sub{
     font-family:'Fraunces',serif;font-style:italic;font-weight:600;
-    font-size:clamp(15px,4vw,24px);color:#7A3A1A;margin-top:.42em;
-    text-shadow:0 1px 0 rgba(255,248,235,.9), 0 2px 8px rgba(255,248,235,.6);
+    font-size:clamp(15px,4vw,24px);color:#7A3A1A;margin-top:.35em;
+    text-shadow:none;
   }
   .cover-foot{
     position:absolute;left:50%;bottom:5.5%;transform:translateX(-50%);
@@ -120,7 +131,7 @@
   .nav:disabled{opacity:.35;cursor:default;background:var(--rust);}
   .track{position:relative;flex:1 1 auto;height:10px;border-radius:6px;background:var(--cream-2);}
   .fill{position:absolute;left:0;top:0;bottom:0;border-radius:6px;background:linear-gradient(90deg,var(--rust),#D08A4A);transition:width .4s ease;}
-  .acorn{position:absolute;top:50%;transform:translate(-50%,-50%);font-size:22px;transition:left .4s ease;filter:drop-shadow(0 1px 1px rgba(67,41,26,.4));}
+  .acorn{position:absolute;top:50%;transform:translate(-50%,-50%);line-height:0;transition:left .4s ease;filter:drop-shadow(0 1px 1px rgba(67,41,26,.4));}
   .count{flex:0 0 auto;font-weight:800;font-size:14px;color:var(--rust-deep);min-width:52px;text-align:center;font-variant-numeric:tabular-nums;}
 
   /* ---- First-time hint ---- */
@@ -142,7 +153,7 @@
 
   <div class="bar">
     <button class="nav" id="prev" aria-label="Previous page">&lsaquo;</button>
-    <div class="track"><div class="fill" id="fill"></div><span class="acorn" id="acorn">&#127808;</span></div>
+    <div class="track"><div class="fill" id="fill"></div><span class="acorn" id="acorn"><svg width="22" height="26" viewBox="0 0 22 26" aria-hidden="true"><path d="M11 1.5c.4 0 .7.3.7.7v2.6h-1.4V2.2c0-.4.3-.7.7-.7z" fill="#5A2E14"/><path d="M4 12.5c0 6.5 3.4 11.5 7 12.3 3.6-.8 7-5.8 7-12.3z" fill="#C98A4B"/><path d="M6.5 13.5c.3 4.6 2.2 8 4.5 9.3" stroke="#E6B47C" stroke-width="1.4" fill="none" stroke-linecap="round"/><path d="M2 11.2C2 7.2 6 4.4 11 4.4s9 2.8 9 6.8c0 1-.8 1.8-1.8 1.8H3.8C2.8 13 2 12.2 2 11.2z" fill="#7A4A28"/><path d="M5 8.2l3 3M8.5 6.4l4.2 4.6M12.6 5.9l4 4.4M5.5 11l6-5M10 11.2l5.5-5" stroke="#5A2E14" stroke-width=".9" opacity=".55" stroke-linecap="round"/></svg></span></div>
     <span class="count" id="count">1 / 21</span>
     <button class="nav" id="next" aria-label="Next page">&rsaquo;</button>
   </div>
@@ -158,6 +169,7 @@ const BOOK = {
   imprint:  "A Pop's Workshop Story",
   verse:    "Children, obey your parents in the Lord, for this is right.",
   verseRef: "Ephesians 6:1",
+  refrain:  "Rules keep us safe",   /* locked refrain — highlighted every time it appears */
 };
 
 /* Pages in order.  Text now shows in the panel ABOVE the image,
@@ -233,7 +245,8 @@ They pulled and pulled.` },
   { file:"pages/14_pg14.jpg", alt:"Safe on the bank", text:
 `Charlie was scared but his friends made sure he was safe.
 He was wet and cold.
-"I am sorry, Sammy. You were right — the creek was not safe," said Charlie.` },
+"I am sorry, Sammy. You were right," said Charlie.
+"Rules keep us safe."` },
 
   { file:"pages/15_pg15.jpg", alt:"Oliver Owl arrives", text:
 `"Whooo goes there?"
@@ -283,7 +296,7 @@ const els=PAGES.map((p,idx)=>{
 
   if(p.cover && BOOK.showCoverTitle){
     const t=document.createElement('div');t.className='cover-title';
-    t.innerHTML=`<h1>${BOOK.title}</h1>`+(BOOK.subtitle?`<div class="sub">${BOOK.subtitle}</div>`:'');
+    t.innerHTML=`<div class="plaque"><h1>${BOOK.title}</h1>`+(BOOK.subtitle?`<div class="sub">${BOOK.subtitle}</div>`:'')+`</div>`;
     d.appendChild(t);
     if(BOOK.imprint){const f=document.createElement('div');f.className='cover-foot';f.textContent=BOOK.imprint;d.appendChild(f);}
   }
@@ -300,7 +313,15 @@ function setCaption(p){
   caption.innerHTML='';
   if(p.text){
     p.text.split('\n').forEach(line=>{
-      const s=document.createElement('span');s.className='ln';s.textContent=line;
+      const s=document.createElement('span');s.className='ln';
+      /* Highlight the refrain wherever it appears in a line */
+      line.split(BOOK.refrain).forEach((part,i,arr)=>{
+        if(part)s.appendChild(document.createTextNode(part));
+        if(BOOK.refrain&&i<arr.length-1){
+          const r=document.createElement('span');r.className='refrain';r.textContent=BOOK.refrain;
+          s.appendChild(r);
+        }
+      });
       caption.appendChild(s);
     });
     caption.classList.remove('empty');
